@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class BLKParserTest {
 	BLKParser b0;
+	public static final int magic = 0xd9b4bef9;
 
 	@Before
 	public void setUp() throws Exception {
@@ -21,16 +22,29 @@ public class BLKParserTest {
 
 	@Test
 	public void testGetInt32(){
-		byte[] contents = b0.getContents();
-		
-		assertEquals(0xd9b4bef9, b0.getInt32(0, contents));
+		int expected = magic;
+		int actual = b0.getContents().getInt(0);
+		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testNextBlockAddr() {
-		fail("Not yet implemented");
+		// should return the starting address of the next block (i.e. location of magic #)
+		// in test case should be 4 + 4 + 285 = 293
+		int expected = 293;
+		int actual = b0.nextBlockAddr(0);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testGetBlockAddrs() {
+		// makes sure that every block address points to a magic number
+		// DOESNT confirm that we are not missing any blocks
+		Integer[] addrs = b0.getBlockAddrs();
+		for (Integer i : addrs){
+			assertEquals(b0.getIntAtAddr(i), magic);
+		}
+	}
 
 
 }

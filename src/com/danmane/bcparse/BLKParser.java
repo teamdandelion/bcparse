@@ -6,89 +6,69 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.nio.ByteOrder;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.LinkedList;
 
 public class BLKParser {
 	private int blockNum;
 	private String blockName, fileName;
 	private String blockDirectory = "/Users/danmane/Library/Application Support/Bitcoin/blocks";
-	private byte[] fileContents;
+	private MappedByteBuffer contents;
+	private RandomAccessFile memMapFile;
+	private long fileSize;
+	private LinkedList<Integer> blockAddresses;
 	
-	public BLKParser(int blockNum_){
+	public BLKParser(int blockNum_) throws Exception{
 		log("initializing parser");
 		blockNum = blockNum_;
 		blockName = String.format("%05d", blockNum);
-		fileName = blockDirectory + "/blk" + blockName + ".dat";
-		fileContents = read(fileName);
-		
+		fileName = blockDirectory + "/testblk.dat";
+		log("opening " + fileName);
+		memMapFile = new RandomAccessFile(fileName, "r");
+		log("got memMapFile");
+		fileSize = memMapFile.length();
+		log("fileSize is " + fileSize);
+		contents = memMapFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
+		contents.order(ByteOrder.LITTLE_ENDIAN);
+		computeBlockAddresses();
 	}
 	
-	int nextBlockAddr(int lastAddr){
-		assert (getInt32(lastAddr, fileContents) == 0xd9b4bef9);
-		return 0;
+	public int nextBlockAddr(int lastAddr){
+		assert(contents.getInt(lastAddr) == 0xd9b4bef9);
+		int length = contents.getInt(lastAddr + 4);
+		return lastAddr + 8 + length;
 	}
 	
-	public byte[] getContents(){
-		return fileContents;
+	public int getIntAtAddr(int addr){
+		return contents.getInt(addr);
 	}
 	
-	int getInt32(int location, byte[] bArray){
-		int a, b, c, d;
-		a = (int) bArray[location]   >> 24;
-		log("byte = " + bArray[location]);
-		log("a = " + a);
-		
-		b = (int) bArray[location+1] >> 16;
-		log(b);
-		c = (int) bArray[location+2] >> 8;
-		log(c);
-		d = (int) bArray[location+3];
-		log(d);
-		log(a^b^c^d);
-		return a^b^c^d;
-	}
-	
-	private byte[] read(String aInputFileName){
-		  log("Reading in binary file named : " + aInputFileName);
-		  File file = new File(aInputFileName);
-		  log("File size: " + file.length());
-		  byte[] result = new byte[(int)file.length()];
-		  log("allocated byte[]");
-		  try {
-		    InputStream input = null;
-		    try {
-		      int totalBytesRead = 0;
-		      input = new BufferedInputStream(new FileInputStream(file));
-		      while(totalBytesRead < result.length){
-		        int bytesRemaining = result.length - totalBytesRead;
-		        //input.read() returns -1, 0, or more :
-		        int bytesRead = input.read(result, totalBytesRead, bytesRemaining); 
-		        if (bytesRead > 0){
-		          totalBytesRead = totalBytesRead + bytesRead;
-		        }
-		      }
-		      /*
-		       the above style is a bit tricky: it places bytes into the 'result' array; 
-		       'result' is an output parameter;
-		       the while loop usually has a single iteration only.
-		      */
-		      log("Num bytes read: " + totalBytesRead);
-		    }
-		    finally {
-		      log("Closing input stream.");
-		      input.close();
-		    }
-		  }
-		  catch (FileNotFoundException ex) {
-		    log("File not found.");
-		  }
-		  catch (IOException ex) {
-		    log(ex);
-		  }
-		  return result;
+	private void computeBlockAddresses(){
+		blockAddresses = new LinkedList<Integer>();
+		int nextAddr = 0;
+		blockAddresses.add(0);
+		while (nextAddr < fileSize){
+			blockAddresses.add( (Integer) nextAddr);
+			nextAddr = nextBlockAddr(nextAddr);
 		}
+	}
+	
+	public MappedByteBuffer getContents(){
+		return contents;
+	}
+	
+	public int getNumBlocks(){
+		return blockAddresses.size();
+	}
+	
+	public Integer[] getBlockAddrs(){
+		return blockAddresses.toArray(new Integer[0]);
+	}
 	
 	private static void log(Object aThing){
 	    System.out.println(String.valueOf(aThing));
 	  }
 }
-/** Read the given binary file, and return its contents as a byte array.*/ 
