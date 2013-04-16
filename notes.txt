@@ -1,0 +1,6 @@
+Things to support:
+
+1. Find magic number
+2. Get block size 
+3. Get # of transactions
+4. Parse individual transactions for Size, Time, 
