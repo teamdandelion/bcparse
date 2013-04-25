@@ -1,1 +1,6 @@
 *.class
+*.jar
+*.jpage
+bin/com/danmane/bcparse/BLKParser.class
+
+bin/com/danmane/bcparse/BLKParserTest.class
