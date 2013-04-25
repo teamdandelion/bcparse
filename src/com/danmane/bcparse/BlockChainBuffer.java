@@ -7,6 +7,7 @@ import java.io.File;
 
 public class BlockChainBuffer {
 	long[] startingMemAddrs; // the starting memory address for each blk
+	long maxAddr;
 	int numBlks; // the number of blks
 	static String blkDirectory = "/Users/danmane/Library/Application Support/Bitcoin/blocks/";
 	
@@ -15,6 +16,23 @@ public class BlockChainBuffer {
 		// Make an array of mmaped files? Or maybe cache them as needed? Not sure
 		calculateNumBlks();
 		calculateStartingMemAddrs(numBlks);
+	}
+	
+	public AddrPair translateAddress(long rawAddr){
+		int blkNum, localAddr;
+		
+		if (rawAddr < 0 || rawAddr > maxAddr){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		blkNum = 0;
+		while (startingMemAddrs[blkNum + 1] < rawAddr){
+			blkNum++;
+		}
+		
+		localAddr = (int) (rawAddr - startingMemAddrs[blkNum]);
+		return new AddrPair(blkNum, localAddr);
+		
 	}
 	
 	private void calculateNumBlks(){
@@ -30,11 +48,12 @@ public class BlockChainBuffer {
 	private void calculateStartingMemAddrs(int numBlks){
 		long runningTotal = 0;
 		
-		startingMemAddrs = new long[numBlks];
+		startingMemAddrs = new long[numBlks+1];
 		for (int i=0; i<numBlks; i++){
 			startingMemAddrs[i] = runningTotal;
 			runningTotal += getBlk(i).length();
 		}
+		startingMemAddrs[numBlks] = runningTotal;
 	}
 	
 	public int getNumBlks(){
