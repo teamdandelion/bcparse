@@ -79,29 +79,28 @@ public class BTCByteBuffer {
 	}
 	
 	
-	public BigInteger goBig(short i){
-		System.out.println("short i: " + i);
-		BigInteger b =  new BigInteger(String.valueOf(i));
-		System.out.println("big b(i): " + b);
-		BigInteger big = new BigInteger("18446744073709551615");
-		System.out.println("big num big: " + big);
-		BigInteger c = b.and(big);
-		System.out.println("bi.and(big) = " + c);
-		return c;
+	public byte[] get32Byte() {
+		byte[] dest = new byte[32];
+		get(dest);
+		return dest;
 	}
-	public BigInteger goBig(int i){
-		BigInteger b =  new BigInteger(String.valueOf(i));
-		BigInteger c = b.and(bigNum);
-		return c;
-	}
-	public BigInteger goBig(long i){
-		return new BigInteger(String.valueOf(i)).and(bigNum);
+	 
+	public byte[] get32Byte(int index){
+		position(index);
+		return get32Byte();
 	}
 	
-//	public BigInteger get32Byte() {
-//		
-//	}
-//	 
+	public BigInteger get4Byte(){
+		byte[] dest = new byte[4];
+		get(dest);
+		return new BigInteger(1, dest);
+	}
+	
+	public BigInteger get4Byte(int index){
+		position(index);
+		return get4Byte();
+	}
+	
 	
 	public byte get(){
 		return contents.get();
