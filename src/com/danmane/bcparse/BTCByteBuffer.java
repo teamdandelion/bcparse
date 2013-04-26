@@ -31,20 +31,14 @@ public class BTCByteBuffer {
 		return big;
 	}
 	
-	public BTCByteBuffer(String fileName){
+	public BTCByteBuffer(String fileName) throws IOException{
 		RandomAccessFile memMapFile;
 
-		try {
-			memMapFile = new RandomAccessFile(fileName, "r");
-			fileSize = memMapFile.length();
-			contents = memMapFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
-			contents.order(ByteOrder.LITTLE_ENDIAN);
-			memMapFile.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		memMapFile = new RandomAccessFile(fileName, "r");
+		fileSize = memMapFile.length();
+		contents = memMapFile.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
+		contents.order(ByteOrder.LITTLE_ENDIAN);
+		memMapFile.close();
 	}
 	
 	public BigInteger getVarInt(){

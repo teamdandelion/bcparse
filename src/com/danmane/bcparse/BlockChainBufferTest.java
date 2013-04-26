@@ -1,6 +1,10 @@
 package com.danmane.bcparse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.math.BigInteger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,9 +14,11 @@ import com.danmane.bcparse.BlockChainBuffer.AddrPair;
 
 public class BlockChainBufferTest {
 	BlockChainBuffer bcb;
+	BigInteger magicNum;
 	@Before
 	public void setUp() throws Exception {
-		bcb = new BlockChainBuffer();
+		bcb = new BlockChainBuffer("/Users/danmane/Dropbox/Code/Eclipse/bcparse/test/test_blks/");
+		magicNum = new BigInteger("4190024921");
 	}
 
 	@After
@@ -21,19 +27,37 @@ public class BlockChainBufferTest {
 
 	@Test
 	public void testNumBlks() {
-		assertEquals(51, bcb.getNumBlks());
-		// Test passed on 4/25 
+		assertEquals(4, bcb.getNumBlks());
 	}
 	
 	@Test
 	public void testTranslateAddress(){
-		AddrPair a0;
-		int bNum, offset;
-		a0 = bcb.translateAddress(0);
-		bNum = a0.getbNum();
-		offset = a0.getbAddr();
-		assertEquals(0, bNum);
-		assertEquals(0, offset);
+		assertAddrEquals(0,  0, bcb.translateAddr(0));
+		assertAddrEquals(0, 30, bcb.translateAddr(30));
+		assertAddrEquals(1,  0, bcb.translateAddr(791755617));
+		assertAddrEquals(1,  1, bcb.translateAddr(791755618));
+		assertAddrEquals(3,  134217727, bcb.translateAddr(1194408800));
+		try{
+			bcb.translateAddr(1194408801);
+			fail("This address was out of bounds");
+		} catch (IndexOutOfBoundsException expectedException){
+		}	
+	}
+	
+	@Test
+	public void testGet4Byte(){
+		assertBIEquals(magicNum, bcb.get4Byte());
+		assertBIEquals(magicNum, bcb.get4Byte(0));
+		assertBIEquals(magicNum, bcb.get4Byte(282));
+	}
+	
+	private void assertAddrEquals(int bNumExpected, int addrExpected, AddrPair actual){
+		assertEquals(bNumExpected, actual.getbNum());
+		assertEquals(addrExpected, actual.getmemAddr());
+	}
+	
+	private void assertBIEquals(BigInteger expected, BigInteger actual) {
+		assertTrue("expected: " + expected + " got: " + actual, expected.equals(actual));
 	}
 
 }
