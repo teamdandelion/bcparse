@@ -28,7 +28,7 @@ public class BTCByteBufferTest {
 		e16_4 = new BigInteger("4294967295");
 		e21_8 = new BigInteger("1157442765409226768");
 		e30_8 = new BigInteger("18446744073709551615");
-		magicNum = new BigInteger("4190024921");
+		magicNum = new BigInteger("3652501241");
 	}
 
 	@After

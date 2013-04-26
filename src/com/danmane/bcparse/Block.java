@@ -9,7 +9,7 @@ public class Block {
 	byte[] blockHash, merkleRoot;
 	BlockChainBuffer theBuffer;
 	Transaction[] transactions;
-	static BigInteger magicNum = new BigInteger("4190024921");
+	static BigInteger magicNum = new BigInteger("3652501241");
 	
 	public Block(long memAddr, int blockNum, BlockChainBuffer theBuffer){
 		this.memAddr   = memAddr;
@@ -23,6 +23,7 @@ public class Block {
 			// All blocks are preceded by the 4 byte magic number
 		}
 		blockLength = theBuffer.get4Byte().longValue();
+		System.out.println(blockLength);
 		blockFormatVersion = theBuffer.get4Byte().intValue();
 		// Makes assumptions about length and format value that don't match spec,
 		// but seem reasonable
