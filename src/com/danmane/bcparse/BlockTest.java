@@ -22,8 +22,7 @@ public class BlockTest {
 	@Test
 	public void testNextAddr() {
 		Block b0 = new Block(0, 0, bcb);
-		assertEquals(293, b0.getNextBlockAddr());
-		Block b1 = new Block(293, 1, bcb);
+		assertEquals(282, b0.getNextBlockAddr());
 	}
 
 }

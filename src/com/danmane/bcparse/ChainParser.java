@@ -23,8 +23,7 @@ public class ChainParser {
 	}
 	
 	public static void main(String[] args){
-		ChainParser cp = new ChainParser("/Users/danmane/Dropbox/Code/Eclipse/bcparse/test/test_blks/");
-		// "/Users/danmane/Library/Application Support/Bitcoin/blocks/"
+		ChainParser cp = new ChainParser("/Users/danmane/Library/Application Support/Bitcoin/blocks/");
 		System.out.println(cp.getNumBlocks());
 	}
 }

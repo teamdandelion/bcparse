@@ -17,7 +17,18 @@ public class BTCByteBuffer {
 	// Constructor makes a new read-only MappedBytebuffer from the file name
 	MappedByteBuffer contents;
 	long fileSize;
+	private BigInteger bigNum = new BigInteger("18446744073709551615");
 	
+	private static BigInteger makeBigNum(){
+		BigInteger big = BigInteger.ONE;
+		big = big.or(big.shiftLeft(32));
+		big = big.or(big.shiftLeft(16));
+		big = big.or(big.shiftLeft(8));
+		big = big.or(big.shiftLeft(4));
+		big = big.or(big.shiftLeft(2));
+		big = big.or(big.shiftLeft(1));
+		return big;
+	}
 	
 	public BTCByteBuffer(String fileName) throws IOException{
 		RandomAccessFile memMapFile;
