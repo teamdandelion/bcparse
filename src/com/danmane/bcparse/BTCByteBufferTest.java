@@ -6,8 +6,6 @@ import java.math.BigInteger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.source.tree.AssertTree;
 	
 public class BTCByteBufferTest {
 	BTCByteBuffer b, b0, bend;

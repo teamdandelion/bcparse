@@ -18,7 +18,7 @@ public class BlockChainBufferTest {
 	@Before
 	public void setUp() throws Exception {
 		bcb = new BlockChainBuffer("/Users/danmane/Dropbox/Code/Eclipse/bcparse/test/test_blks/");
-		magicNum = new BigInteger("4190024921");
+		magicNum = new BigInteger("3652501241");
 	}
 
 	@After
@@ -48,7 +48,7 @@ public class BlockChainBufferTest {
 	public void testGet4Byte(){
 		assertBIEquals(magicNum, bcb.get4Byte());
 		assertBIEquals(magicNum, bcb.get4Byte(0));
-		assertBIEquals(magicNum, bcb.get4Byte(282));
+		assertBIEquals(magicNum, bcb.get4Byte(293));
 	}
 	
 	private void assertAddrEquals(int bNumExpected, int addrExpected, AddrPair actual){

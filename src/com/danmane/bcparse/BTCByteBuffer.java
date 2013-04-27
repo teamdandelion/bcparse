@@ -1,14 +1,11 @@
 package com.danmane.bcparse;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class BTCByteBuffer {
 	// A wrapper for a MappedByteBuffer with specialized functions for 
