@@ -75,7 +75,6 @@ public class BTCByteBuffer {
 	public byte[] get32Byte() {
 		byte[] dest = new byte[32];
 		get(dest);
-		flip(dest);
 		return dest;
 	}
 	 
@@ -87,7 +86,6 @@ public class BTCByteBuffer {
 	public BigInteger get4Byte(){
 		byte[] dest = new byte[4];
 		get(dest);
-		flip(dest);
 		return new BigInteger(1, dest);
 	}
 	
@@ -107,7 +105,6 @@ public class BTCByteBuffer {
 	
 	public void get(byte[] dest){
 		contents.get(dest);
-		flip(dest);
 	}
 	
 	public int getInt(){
@@ -140,14 +137,6 @@ public class BTCByteBuffer {
 	
 	public void position(int newPosition){
 		contents.position(newPosition);
-	}
-	
-	private void flip(byte[] byteArray){
-		for (int i = 0; i<byteArray.length/2; i++){
-			byte temp = byteArray[i];
-			byteArray[i] = byteArray[byteArray.length-i-1];
-			byteArray[byteArray.length-i-1] = temp;
-		}
 	}
 	
 	

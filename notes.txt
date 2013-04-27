@@ -4,3 +4,41 @@ Things to support:
 2. Get block size 
 3. Get # of transactions
 4. Parse individual transactions for Size, Time, 
+
+Block Parser
+
+BlockChainBuffer
+# Abstraction: Allows us to treat the entire blockchain like a single file
+# Behind the scenes, does address translation to get from the multiple blk files
+
+- GetVarInt(Position)
+- GetVarInt
+- Get4Byte
+etc
+
+
+Block
+public Block(long address, int blockNum, BlockChainBuffer bcb)
+	- load the block into memory, parse transactions
+
+public Transaction[] getTransactions()
+
+public Transaction getTransaction(int Position)
+# Check if int is a good typebinding
+
+public void writeToDB(BlockDB)
+
+public Byte[] getHash()
+
+
+
+Transaction
+public Transaction(long address, int blockNum, blockChainBuffer bcb)
+
+public Flow[] getInputs()
+
+public Flow[] getOutputs()
+
+public long getFee()
+
+Flow: (String, )
