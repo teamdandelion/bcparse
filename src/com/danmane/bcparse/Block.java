@@ -19,11 +19,12 @@ public class Block {
 		BigInteger shouldBeMagic = theBuffer.get4Byte(memAddr);
 		if (!shouldBeMagic.equals(magicNum)){
 			System.out.println("Block " + blockNum + " missing magic at addr " + memAddr);
+			theBuffer.printPosition();
 			throw new RuntimeException();
 			// All blocks are preceded by the 4 byte magic number
 		}
 		blockLength = theBuffer.get4Byte().longValue();
-		System.out.println(blockLength);
+		//System.out.println(blockLength);
 		blockFormatVersion = theBuffer.get4Byte().intValue();
 		// Makes assumptions about length and format value that don't match spec,
 		// but seem reasonable

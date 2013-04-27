@@ -128,6 +128,13 @@ public class BlockChainBuffer {
 		return localAddr + startingMemAddrs[openBufferNum];
 	}
 	
+	public void printPosition(){
+		System.out.println("Local addr  = " + openBuffer.position());
+		System.out.println("BLK num     = " + openBufferNum);
+		System.out.println("BLK start   = " + startingMemAddrs[openBufferNum]);
+		System.out.println("Global addr = " + ((long) openBuffer.position() + startingMemAddrs[openBufferNum]));
+	}
+	
 	public void position(long newPosition){
 		AddrPair newloc = translateAddr(newPosition);
 		int bnum = newloc.getbNum();
@@ -173,7 +180,6 @@ public class BlockChainBuffer {
 		
 		localAddr = (int) (rawAddr - startingMemAddrs[blkNum]);
 		return new AddrPair(blkNum, localAddr);
-		
 	}
 	
 	private void calculateNumBlks(){
@@ -189,7 +195,6 @@ public class BlockChainBuffer {
 		if (openBuffer.position() == openBufferCapacity && openBufferNum < (numBlks-1)){
 			getBuffer(openBufferNum + 1);
 		}
-
 	}
 
 	private void calculateStartingMemAddrs(int numBlks){
