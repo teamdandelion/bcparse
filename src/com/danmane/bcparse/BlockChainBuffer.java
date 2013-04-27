@@ -138,7 +138,7 @@ public class BlockChainBuffer {
 	
 	void getBuffer(int bufferNum){
 		if (openBufferNum == bufferNum){
-			return; // nothing needs be done
+			System.out.println("FYI: getBuffer called on current buffer");
 		} else {
 			openBufferNum = bufferNum;
 			String fileName = "blk" + String.format("%05d", bufferNum) + ".dat";
@@ -160,15 +160,9 @@ public class BlockChainBuffer {
 			throw new IndexOutOfBoundsException();
 		}
 		
-		if (startingMemAddrs[openBufferNum] < rawAddr && startingMemAddrs[openBufferNum+1] > rawAddr){
-			blkNum = openBufferNum;
-			// in most cases we are staying in the current buffer
-		} else {
-			blkNum = 0;
-			while (startingMemAddrs[blkNum + 1] <= rawAddr){
-				blkNum++;
-			}
-			// this algorithm could be made more efficient using a binary search pattern
+		blkNum = 0;
+		while (startingMemAddrs[blkNum + 1] <= rawAddr){
+			blkNum++;
 		}
 		
 		localAddr = (int) (rawAddr - startingMemAddrs[blkNum]);
