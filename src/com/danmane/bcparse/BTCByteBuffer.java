@@ -7,6 +7,8 @@ import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public class BTCByteBuffer {
 	// A wrapper for a MappedByteBuffer with specialized functions for 
 	// parsing the bitcoin block chain, e.g. getVarInt()
@@ -91,7 +93,7 @@ public class BTCByteBuffer {
 	
 	public void get(byte[] dest){
 		contents.get(dest);
-		flip(dest);
+		ArrayUtils.reverse(dest);
 	}
 	
 	public int getInt(){
@@ -124,14 +126,6 @@ public class BTCByteBuffer {
 	
 	public void position(int newPosition){
 		contents.position(newPosition);
-	}
-
-	private void flip(byte[] byteArray){
-		for (int i = 0; i<byteArray.length/2; i++){
-			byte temp = byteArray[i];
-			byteArray[i] = byteArray[byteArray.length-i-1];
-			byteArray[byteArray.length-i-1] = temp;
-		}
 	}
 	
 	
