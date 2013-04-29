@@ -39,10 +39,10 @@ public class BlockTest {
 			Block b1 = new Block(293, bcb);
 			byte[] b0hash, b1prev;
 			b0hash = b0.getHash();
-			b1prev = b1.getPrevBlockHash();
+			b1prev = b1.getPrevHash();
 			//System.out.println("b0Hash: " + Hex.encodeHexString(b0hash));
 			//System.out.println("b1Prev: " + Hex.encodeHexString(b1prev));
-			assertArrayEquals(b1.getPrevBlockHash(), b0.getHash());
+			assertArrayEquals(b1prev, b0hash);
 		} catch (EndOfBlkException e){
 			fail("Shouldn't have happened");
 		}
