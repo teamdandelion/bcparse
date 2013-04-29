@@ -1,6 +1,7 @@
 package com.danmane.bcparse;
 
 import static org.junit.Assert.*;
+import org.apache.commons.codec.binary.Hex;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,9 +22,30 @@ public class BlockTest {
 
 	@Test
 	public void testNextAddr() {
-		Block b0 = new Block(0, 0, bcb);
-		assertEquals(293, b0.getNextBlockAddr());
-		Block b1 = new Block(293, 1, bcb);
+		try{
+			Block b0 = new Block(0, bcb);
+			assertEquals(293, b0.getNextBlockAddr());
+			
+			Block b1 = new Block(293, bcb);
+		} catch (EndOfBlkException e) {
+			fail("This is unexpected");
+		}
+	}
+	
+	@Test
+	public void testBlockHash(){
+		try{
+			Block b0 = new Block(0, bcb);
+			Block b1 = new Block(293, bcb);
+			byte[] b0hash, b1prev;
+			b0hash = b0.getHash();
+			b1prev = b1.getPrevBlockHash();
+			//System.out.println("b0Hash: " + Hex.encodeHexString(b0hash));
+			//System.out.println("b1Prev: " + Hex.encodeHexString(b1prev));
+			assertArrayEquals(b1.getPrevBlockHash(), b0.getHash());
+		} catch (EndOfBlkException e){
+			fail("Shouldn't have happened");
+		}
 	}
 
 }

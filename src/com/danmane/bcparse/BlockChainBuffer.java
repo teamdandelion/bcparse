@@ -217,6 +217,10 @@ public class BlockChainBuffer {
 		return maxAddr;
 	}
 	
+	public long getNextBlkAddr(){
+		return startingMemAddrs[openBufferNum+1];
+	}
+	
 	private File getBlk(int i){
 		String fileName;
 		fileName = "blk" + String.format("%05d", i) + ".dat";
