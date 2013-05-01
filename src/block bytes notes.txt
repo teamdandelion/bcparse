@@ -1,0 +1,25 @@
+01 00 00 00 block fmt vs
+
+00 00 00 00 prev hash
+00 00 00 00 
+00 00 00 00 
+00 00 00 00 
+00 00 00 00 
+00 00 00 00 
+00 00 00 00 
+00 00 00 00 
+
+3b a3 ed fd merkle root
+7a 7b 12 b2
+7a c7 2c 3e 
+67 76 8f 61 
+7f c8 1b c3 
+88 8a 51 32 
+3a 9f b8 aa 
+4b 1e 5e 4a 
+
+29 ab 5f 49 timestamp
+
+ff ff 00 1d target
+
+1d ac 2b 7c nonce

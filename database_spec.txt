@@ -1,0 +1,39 @@
+int blockHeight -> byte[] blockHash
+				-> long memAddr
+
+40
+
+String blockHash -> int  blockHeight
+
+4
+
+String bitcoinAddr 	-> long numTransactions
+				   	-> long totalIn
+				   	-> long totalOut
+				   	-> long finalBalance
+				   	-> long[] txAddrs // Oldest first
+
+32 + 8 * #txs
+
+long txMemAddr 		-> long totalIn
+					-> long totalOut
+					-> long numInputs
+					-> long[] inputAddrs
+					-> long[] inputAmts
+					-> long numOutputs
+					-> long[] outputAddrs
+					-> long[] outputAmts // depends on long encoding of addrs
+32 + 16 * inputs + 16 * outputs					
+
+
+
+
+String txnHash  -> long memAddr 
+				-> 
+
+
+
+approximately 4 million transactions
+200k blocks
+guess: maybe 2-10 million addresses?
+
